@@ -1,4 +1,6 @@
-package com.plainprog.dictionary.model;
+package com.plainprog.dictionary.model.db;
+
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 
@@ -33,7 +35,8 @@ public class Dictionary {
         return isPublic;
     }
 
-    public void setPublic(Boolean aPublic) {
-        isPublic = aPublic;
+    public void setPublic(Boolean isPublic) {
+        this.isPublic = isPublic;
     }
+
 }

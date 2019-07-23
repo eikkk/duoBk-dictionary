@@ -1,4 +1,4 @@
-package com.plainprog.dictionary.model;
+package com.plainprog.dictionary.model.db;
 
 import javax.persistence.*;
 

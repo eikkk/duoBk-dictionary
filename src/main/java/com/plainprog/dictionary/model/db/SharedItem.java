@@ -1,21 +1,21 @@
-package com.plainprog.dictionary.model;
+package com.plainprog.dictionary.model.db;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "shared_dict")
-public class SharedDictionary {
+@Table(name = "shared_item")
+public class SharedItem {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "dict_id")
-    private Integer dictId;
+    @Column(name = "item_id")
+    private Integer itemId;
     @Column(name = "receiver_id")
     private Integer receiverId;
     @Column(name = "wasOpened")
-    private Boolean wasOpened;
+    private  Boolean wasOpened;
 
-    public SharedDictionary() {
+    public SharedItem() {
     }
 
     public Integer getId() {
@@ -26,12 +26,12 @@ public class SharedDictionary {
         this.id = id;
     }
 
-    public Integer getDictId() {
-        return dictId;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setDictId(Integer dictId) {
-        this.dictId = dictId;
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
     public Integer getReceiverId() {

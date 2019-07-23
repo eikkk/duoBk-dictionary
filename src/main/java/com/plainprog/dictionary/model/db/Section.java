@@ -1,6 +1,5 @@
-package com.plainprog.dictionary.model;
+package com.plainprog.dictionary.model.db;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import javax.persistence.*;
 
