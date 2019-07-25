@@ -12,6 +12,8 @@ public class Item {
     private Integer sectionId;
     @Column(name = "value")
     private String value;
+    @Column(name = "lang")
+    private String lang;
     @Column(name = "isPublic")
     private Boolean isPublic;
 
@@ -40,6 +42,14 @@ public class Item {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getLang() {
+        return lang;
+    }
+
+    public void setLang(String lang) {
+        this.lang = lang;
     }
 
     public Boolean getPublic() {

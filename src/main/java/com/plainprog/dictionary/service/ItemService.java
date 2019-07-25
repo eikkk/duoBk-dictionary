@@ -1,22 +1,101 @@
 package com.plainprog.dictionary.service;
 
+import com.plainprog.dictionary.model.ItemWithTranslationsModel;
 import com.plainprog.dictionary.model.MoveItemModel;
 import com.plainprog.dictionary.model.db.Item;
+import com.plainprog.dictionary.model.db.ItemTranslation;
+import com.plainprog.dictionary.model.db.Section;
+import com.plainprog.dictionary.model.db.SharedItem;
 import com.plainprog.dictionary.repository.ItemRepository;
+import com.plainprog.dictionary.repository.SectionRepository;
+import com.plainprog.dictionary.repository.SharedItemRepository;
+import com.plainprog.dictionary.repository.TranslationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ItemService {
     @Autowired
-    ItemRepository repository;
+    ItemRepository itemRepository;
+    @Autowired
+    SharedItemRepository sharedItemRepository;
+    @Autowired
+    TranslationRepository translationRepository;
+    @Autowired
+    SectionRepository sectionRepository;
 
-    public Item create(Item item){
-        item.setId(null);
-        return  repository.save(item);
+    public Item createItem(ItemWithTranslationsModel item){
+        item.getItem().setId(null);
+        Item itemSaved = itemRepository.save(item.getItem());
+        for(ItemTranslation translation : item.getTranslations()){
+            translation.setId(null);
+            translation.setItemId(itemSaved.getId());
+            translationRepository.save(translation);
+        }
+        return  itemSaved;
     }
 
-    public void moveItemToSection(MoveItemModel moveItemModel){
-        repository.moveToDict(Integer.toString(moveItemModel.getItemId()), Integer.toString(moveItemModel.getSectionId()));
+    public boolean edit(ItemWithTranslationsModel item){
+        Optional<Item> itemFromDb = itemRepository.findById(item.getItem().getId());
+        if(!itemFromDb.isPresent())
+            return false;
+        itemRepository.save(item.getItem());
+        for(ItemTranslation translation : item.getTranslations()){
+            translation.setItemId(item.getItem().getId());
+            translationRepository.save(translation);
+        }
+        return true;
+    }
+
+    public boolean moveItemToSection(MoveItemModel moveItemModel){
+        Optional<Section> section = sectionRepository.findById(moveItemModel.getSectionId());
+        if(!section.isPresent())
+            return false;
+        Optional<Item> item = itemRepository.findById(moveItemModel.getItemId());
+        if(!item.isPresent())
+            return false;
+        item.get().setSectionId(moveItemModel.getSectionId());
+        itemRepository.save(item.get());
+        return true;
+    }
+
+    public boolean createSharedItem(SharedItem sharedItem){
+        Optional<Item> item = itemRepository.findById(sharedItem.getItemId());
+        if(!item.isPresent())
+            return false;
+        sharedItem.setId(null);
+        sharedItemRepository.save(sharedItem);
+        return true;
+    }
+    public boolean deleteTranslation(Integer translationId){
+        Optional<ItemTranslation> translation = translationRepository.findById(translationId);
+        if(!translation.isPresent())
+            return false;
+        translationRepository.delete(translation.get());
+        return true;
+    }
+    public boolean deleteItem(Integer itemId){
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(!item.isPresent())
+            return false;
+        itemRepository.delete(item.get());
+        return true;
+    }
+    public boolean deleteSharedItem(Integer sharedItemId){
+        Optional<SharedItem> sharedItem = sharedItemRepository.findById(sharedItemId);
+        if(!sharedItem.isPresent())
+            return false;
+        sharedItemRepository.delete(sharedItem.get());
+        return true;
+    }
+    public boolean changePublicity(Integer itemId){
+        Optional<Item> item = itemRepository.findById(itemId);
+        if(!item.isPresent())
+            return false;
+        item.get().setPublic(!item.get().getPublic());
+        itemRepository.save(item.get());
+        return true;
     }
 }
