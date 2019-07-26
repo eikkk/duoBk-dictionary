@@ -1,16 +1,14 @@
 package com.plainprog.dictionary.controller;
 
 import com.plainprog.dictionary.Constants;
+import com.plainprog.dictionary.model.SectionModel;
 import com.plainprog.dictionary.model.db.Section;
 import com.plainprog.dictionary.model.db.SharedSection;
 import com.plainprog.dictionary.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path="/dictionary/section")
@@ -48,5 +46,12 @@ public class SectionController {
         if(service.changePublicity(sectionId))
             return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
+    }
+    @RequestMapping(method = RequestMethod.GET, value = "/Get")
+    public ResponseEntity getSection(@RequestParam(value = "id",required = true) Integer id ){
+        SectionModel sectionModel = service.getModel(id);
+        if(sectionModel== null)
+            return new ResponseEntity<>(Constants.MESSAGE204, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(sectionModel,HttpStatus.OK);
     }
 }

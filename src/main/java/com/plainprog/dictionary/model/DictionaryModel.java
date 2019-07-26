@@ -9,9 +9,16 @@ public class DictionaryModel {
     private Integer id;
     private Integer ownerId;
     private boolean isPublic;
-    private ArrayList<Section> sections;
+    private ArrayList<SectionModel> sections;
 
     public DictionaryModel() {
+    }
+
+    public DictionaryModel(Integer id, Integer ownerId, boolean isPublic, ArrayList<SectionModel> sections) {
+        this.id = id;
+        this.ownerId = ownerId;
+        this.isPublic = isPublic;
+        this.sections = sections;
     }
 
     public Integer getId() {
@@ -38,11 +45,11 @@ public class DictionaryModel {
         isPublic = aPublic;
     }
 
-    public ArrayList<Section> getSections() {
+    public ArrayList<SectionModel> getSections() {
         return sections;
     }
 
-    public void setSections(ArrayList<Section> sections) {
+    public void setSections(ArrayList<SectionModel> sections) {
         this.sections = sections;
     }
 }

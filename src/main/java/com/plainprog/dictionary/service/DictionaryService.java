@@ -1,13 +1,11 @@
 package com.plainprog.dictionary.service;
 
 import com.plainprog.dictionary.model.DictionaryModel;
-import com.plainprog.dictionary.model.db.Dictionary;
-import com.plainprog.dictionary.model.db.Item;
-import com.plainprog.dictionary.model.db.Section;
-import com.plainprog.dictionary.model.db.SharedDictionary;
-import com.plainprog.dictionary.repository.DictionaryRepository;
-import com.plainprog.dictionary.repository.SectionRepository;
-import com.plainprog.dictionary.repository.SharedDictRepository;
+import com.plainprog.dictionary.model.ItemModel;
+import com.plainprog.dictionary.model.SectionModel;
+import com.plainprog.dictionary.model.TranslationModel;
+import com.plainprog.dictionary.model.db.*;
+import com.plainprog.dictionary.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +21,10 @@ public class DictionaryService {
     SharedDictRepository sharedDictRepository;
     @Autowired
     SectionRepository sectionRepository;
+    @Autowired
+    ItemRepository itemRepository;
+    @Autowired
+    TranslationRepository translationRepository;
 
 
     public Dictionary createDict(Dictionary dict){
@@ -59,10 +61,36 @@ public class DictionaryService {
         if(!dictionary.isPresent())
             return null;
         List<Section> sections = sectionRepository.findByDictId(id);
+        ArrayList<SectionModel> sectionModels = new ArrayList<>();
+        for(Section section : sections){
+            ArrayList<ItemModel> itemModels = new ArrayList<>();
+            List<Item> items = itemRepository.findBySectionId(section.getId());
+            for(Item item : items){
+                ArrayList<TranslationModel> translationModels = new ArrayList<>();
+                List<ItemTranslation> itemTranslations = translationRepository.findByItemId(item.getId());
+                for(ItemTranslation translation : itemTranslations){
+                    translationModels.add(new TranslationModel(translation));
+                }
+                ItemModel itemModel = new ItemModel();
+                itemModel.setId(item.getId());
+                itemModel.setOriginal(new TranslationModel(item.getValue(),item.getLang()));
+                itemModel.setPublic(item.getPublic());
+                itemModel.setSectionId(item.getSectionId());
+                itemModel.setTranslations(translationModels);
+                itemModels.add(itemModel);
+            }
+            SectionModel sectionModel = new SectionModel();
+            sectionModel.setId(section.getId());
+            sectionModel.setDictId(section.getDictId());
+            sectionModel.setName(section.getName());
+            sectionModel.setItems(itemModels);
+            sectionModels.add(sectionModel);
+        }
         DictionaryModel model = new DictionaryModel();
         model.setId(dictionary.get().getId());
         model.setOwnerId(dictionary.get().getUserId());
         model.setPublic(dictionary.get().getPublic());
-        return null;
+        model.setSections(sectionModels);
+        return model;
     }
 }

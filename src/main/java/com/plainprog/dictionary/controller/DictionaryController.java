@@ -1,6 +1,7 @@
 package com.plainprog.dictionary.controller;
 
 import com.plainprog.dictionary.Constants;
+import com.plainprog.dictionary.model.DictionaryModel;
 import com.plainprog.dictionary.model.db.Dictionary;
 import com.plainprog.dictionary.model.db.SharedDictionary;
 import com.plainprog.dictionary.service.DictionaryService;
@@ -42,10 +43,10 @@ public class DictionaryController {
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
     }
     @RequestMapping(method = RequestMethod.GET, value = "/Get")
-    public ResponseEntity deleteShared(@RequestParam(value = "id",required = true) String id ){
-        /*if(service.deleteSharedDict(sharedDictId))
-            return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
-        return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);*/
-        return null;
+    public ResponseEntity getDict(@RequestParam(value = "id",required = true) Integer id ){
+        DictionaryModel dictionaryModel = service.getModel(id);
+        if(dictionaryModel== null)
+            return new ResponseEntity<>(Constants.MESSAGE204, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(dictionaryModel,HttpStatus.OK);
     }
 }

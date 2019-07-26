@@ -1,7 +1,6 @@
 package com.plainprog.dictionary.service;
 
-import com.plainprog.dictionary.model.ItemWithTranslationsModel;
-import com.plainprog.dictionary.model.MoveItemModel;
+import com.plainprog.dictionary.model.*;
 import com.plainprog.dictionary.model.db.Item;
 import com.plainprog.dictionary.model.db.ItemTranslation;
 import com.plainprog.dictionary.model.db.Section;
@@ -13,6 +12,8 @@ import com.plainprog.dictionary.repository.TranslationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -97,5 +98,23 @@ public class ItemService {
         item.get().setPublic(!item.get().getPublic());
         itemRepository.save(item.get());
         return true;
+    }
+
+    public ItemModel getModel(Integer id){
+        Optional<Item> itemOptional = itemRepository.findById(id);
+        if(!itemOptional.isPresent())
+            return null;
+        ArrayList<TranslationModel> translationModels = new ArrayList<>();
+        List<ItemTranslation> itemTranslations = translationRepository.findByItemId(itemOptional.get().getId());
+        for(ItemTranslation translation : itemTranslations){
+            translationModels.add(new TranslationModel(translation));
+        }
+        ItemModel itemModel = new ItemModel();
+        itemModel.setId(itemOptional.get().getId());
+        itemModel.setOriginal(new TranslationModel(itemOptional.get().getValue(),itemOptional.get().getLang()));
+        itemModel.setPublic(itemOptional.get().getPublic());
+        itemModel.setSectionId(itemOptional.get().getSectionId());
+        itemModel.setTranslations(translationModels);
+        return itemModel;
     }
 }

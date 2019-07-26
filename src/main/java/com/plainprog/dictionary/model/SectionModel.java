@@ -1,5 +1,7 @@
 package com.plainprog.dictionary.model;
 
+import com.plainprog.dictionary.model.db.Section;
+
 import java.util.ArrayList;
 
 public class SectionModel {
@@ -10,6 +12,14 @@ public class SectionModel {
     private ArrayList<ItemModel> items;
 
     public SectionModel() {
+    }
+
+    public SectionModel(Integer id, Integer dictId, String name, Boolean isPublic, ArrayList<ItemModel> items) {
+        this.id = id;
+        this.dictId = dictId;
+        this.name = name;
+        this.isPublic = isPublic;
+        this.items = items;
     }
 
     public Integer getId() {
