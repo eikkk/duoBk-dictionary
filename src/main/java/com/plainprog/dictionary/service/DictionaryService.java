@@ -55,7 +55,10 @@ public class DictionaryService {
         dictRepository.save(dict.get());
         return true;
     }
-
+    public DictionaryModel getDictByAccessToken(String accessId){
+        Integer id = dictRepository.getDictIdByAccessId(accessId);
+        return  getModel(id);
+    }
     public DictionaryModel getModel(Integer id){
         Optional<Dictionary> dictionary = dictRepository.findById(id);
         if(!dictionary.isPresent())

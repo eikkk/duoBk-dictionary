@@ -49,4 +49,11 @@ public class DictionaryController {
             return new ResponseEntity<>(Constants.MESSAGE204, HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(dictionaryModel,HttpStatus.OK);
     }
+   @RequestMapping(method = RequestMethod.GET, value = "/GetByAccessId")
+    public ResponseEntity getDictByAccessId(@RequestParam(value = "id",required = true) String accessId ){
+        DictionaryModel dictionaryModel = service.getDictByAccessToken(accessId);
+        if(dictionaryModel== null)
+            return new ResponseEntity<>(Constants.MESSAGE204, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(dictionaryModel,HttpStatus.OK);
+    }
 }
