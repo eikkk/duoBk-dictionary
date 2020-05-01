@@ -55,5 +55,11 @@ public class DictionaryController {
         if(dictionaryModel== null)
             return new ResponseEntity<>(Constants.MESSAGE204, HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(dictionaryModel,HttpStatus.OK);
+    }   @RequestMapping(method = RequestMethod.GET, value = "/GetOrCreateAndGetByAccessId")
+    public ResponseEntity createIfNotExistAndGetDictByAccessId(@RequestParam(value = "id",required = true) String accessId ){
+        DictionaryModel dictionaryModel = service.getOrCreateAndGetDictByAccessToken(accessId);
+        if(dictionaryModel== null)
+            return new ResponseEntity<>(Constants.MESSAGE204, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(dictionaryModel,HttpStatus.OK);
     }
 }
