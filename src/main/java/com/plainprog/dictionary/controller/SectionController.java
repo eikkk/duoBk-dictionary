@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="/dictionary/section")
+@RequestMapping(path="/section")
 public class SectionController {
     @Autowired
     SectionService service;
@@ -25,6 +25,12 @@ public class SectionController {
     @RequestMapping(value = "/CreateShared",method = RequestMethod.POST)
     public ResponseEntity createSharedSection(@RequestBody SharedSection sharedSection){
         if(service.createSharedSection(sharedSection))
+            return new ResponseEntity<>(Constants.MESSAGE200, HttpStatus.OK);
+        return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
+    }
+    @RequestMapping(value = "/ChangeName",method = RequestMethod.PUT)
+    public ResponseEntity changeSectionName(@RequestParam(value = "sectionId", required = true) Integer sectionId, @RequestParam(value = "name",required = true) String newName){
+        if(service.changeSectionName(sectionId,newName))
             return new ResponseEntity<>(Constants.MESSAGE200, HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
     }

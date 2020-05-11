@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="/dictionary/item")
+@RequestMapping(path="/item")
 public class ItemController {
     @Autowired
     ItemService service;

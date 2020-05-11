@@ -40,6 +40,14 @@ public class SectionService {
         sharedSectionRepository.save(sharedSection);
         return true;
     }
+    public boolean changeSectionName(Integer sectionId, String sectionName){
+        Optional<Section> section = sectionRepository.findById(sectionId);
+        if(!section.isPresent())
+            return false;
+        section.get().setName(sectionName);
+        sectionRepository.save(section.get());
+        return true;
+    }
     public boolean deleteSection(Integer sectionId){
         Optional<Section> section = sectionRepository.findById(sectionId);
         if(!section.isPresent())
