@@ -37,7 +37,9 @@ public class ItemService {
         }
         return  itemSaved;
     }
-
+    public List<Item> getItemsBySectionId(Integer sectionId){
+        return itemRepository.findBySectionId(sectionId);
+    }
     public boolean edit(ItemWithTranslationsModel item){
         Optional<Item> itemFromDb = itemRepository.findById(item.getItem().getId());
         if(!itemFromDb.isPresent())

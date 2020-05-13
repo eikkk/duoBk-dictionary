@@ -1,25 +1,33 @@
 package com.plainprog.dictionary.controller;
 
 import com.plainprog.dictionary.Constants;
+import com.plainprog.dictionary.model.ItemModel;
 import com.plainprog.dictionary.model.SectionModel;
+import com.plainprog.dictionary.model.db.Item;
 import com.plainprog.dictionary.model.db.Section;
 import com.plainprog.dictionary.model.db.SharedSection;
+import com.plainprog.dictionary.service.ItemService;
 import com.plainprog.dictionary.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping(path="/section")
 public class SectionController {
     @Autowired
     SectionService service;
+    @Autowired
+    ItemService itemService;
 
     @RequestMapping(value = "/Create",method = RequestMethod.POST)
-    public ResponseEntity createSection(@RequestBody Section section) {
-        service.createSection(section);
-        return new ResponseEntity<>(Constants.MESSAGE200, HttpStatus.OK);
+    public ResponseEntity<Section> createSection(@RequestBody Section section) {
+        Section section1 = service.createSection(section);
+        return new ResponseEntity<Section>(section1, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/CreateShared",method = RequestMethod.POST)
@@ -36,6 +44,10 @@ public class SectionController {
     }
     @RequestMapping(method = RequestMethod.DELETE, value = "/Delete")
     public ResponseEntity delete(@RequestBody Integer sectionId){
+        List<Item> items = itemService.getItemsBySectionId(sectionId);
+        for (Item item : items){
+            itemService.deleteItem(item.getId());
+        }
         if(service.deleteSection(sectionId))
             return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
