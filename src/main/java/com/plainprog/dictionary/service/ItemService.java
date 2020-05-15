@@ -27,7 +27,7 @@ public class ItemService {
     @Autowired
     SectionRepository sectionRepository;
 
-    public Item createItem(ItemWithTranslationsModel item){
+    public ItemModel createItem(ItemWithTranslationsModel item){
         item.getItem().setId(null);
         Item itemSaved = itemRepository.save(item.getItem());
         for(ItemTranslation translation : item.getTranslations()){
@@ -35,7 +35,7 @@ public class ItemService {
             translation.setItemId(itemSaved.getId());
             translationRepository.save(translation);
         }
-        return  itemSaved;
+        return  getModel(itemSaved.getId());
     }
     public List<Item> getItemsBySectionId(Integer sectionId){
         return itemRepository.findBySectionId(sectionId);

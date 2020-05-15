@@ -19,9 +19,9 @@ public class ItemController {
     ItemService service;
 
     @RequestMapping(method = RequestMethod.POST, value = "/Create")
-    public ResponseEntity createItem(@RequestBody ItemWithTranslationsModel item){
-        service.createItem(item);
-        return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
+    public ResponseEntity<ItemModel> createItem(@RequestBody ItemWithTranslationsModel item){
+        ItemModel model = service.createItem(item);
+        return new ResponseEntity<ItemModel>(model,HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/CreateShared")
