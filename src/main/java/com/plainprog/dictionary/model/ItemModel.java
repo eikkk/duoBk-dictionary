@@ -1,5 +1,7 @@
 package com.plainprog.dictionary.model;
 
+import com.plainprog.dictionary.model.db.ItemTranslation;
+
 import java.util.ArrayList;
 
 public class ItemModel {
@@ -7,7 +9,7 @@ public class ItemModel {
     private Integer sectionId;
     private Boolean isPublic;
     private TranslationModel original;
-    private ArrayList<TranslationModel> translations;
+    private ArrayList<ItemTranslation> translations;
 
     public ItemModel() {
     }
@@ -44,11 +46,11 @@ public class ItemModel {
         this.original = original;
     }
 
-    public ArrayList<TranslationModel> getTranslations() {
+    public ArrayList<ItemTranslation> getTranslations() {
         return translations;
     }
 
-    public void setTranslations(ArrayList<TranslationModel> translations) {
+    public void setTranslations(ArrayList<ItemTranslation> translations) {
         this.translations = translations;
     }
 }

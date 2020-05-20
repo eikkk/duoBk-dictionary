@@ -24,6 +24,13 @@ public class ItemController {
         return new ResponseEntity<ItemModel>(model,HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/Edit")
+    public ResponseEntity<ItemModel> edit(@RequestBody ItemWithTranslationsModel item){
+        ItemModel model = service.edit(item);
+        if(model != null)
+            return new ResponseEntity<>(model,HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
+    }
     @RequestMapping(method = RequestMethod.POST, value = "/CreateShared")
     public ResponseEntity createSharedItem(@RequestBody SharedItem sharedItem){
         if(service.createSharedItem(sharedItem))
@@ -38,12 +45,6 @@ public class ItemController {
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/Edit")
-    public ResponseEntity edit(@RequestBody ItemWithTranslationsModel item){
-        if(service.edit(item))
-            return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
-        return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
-    }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/DeleteTranslation")
     public ResponseEntity deleteTranslation(@RequestBody Integer translationId){

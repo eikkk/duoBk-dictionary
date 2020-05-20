@@ -5,17 +5,20 @@ import com.plainprog.dictionary.model.db.ItemTranslation;
 public class TranslationModel {
     private String value;
     private String lang;
+    private String note;
 
     public TranslationModel() {
     }
 
-    public TranslationModel(String value, String lang) {
+    public TranslationModel(String value, String lang, String note) {
         this.value = value;
         this.lang = lang;
+        this.note = note;
     }
     public TranslationModel(ItemTranslation translation){
         this.value = translation.getValue();
         this.lang = translation.getLang();
+        this.note = translation.getNote();
     }
 
     public String getValue() {
@@ -32,5 +35,13 @@ public class TranslationModel {
 
     public void setLang(String lang) {
         this.lang = lang;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

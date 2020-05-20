@@ -40,16 +40,32 @@ public class ItemService {
     public List<Item> getItemsBySectionId(Integer sectionId){
         return itemRepository.findBySectionId(sectionId);
     }
-    public boolean edit(ItemWithTranslationsModel item){
+    public ItemModel edit(ItemWithTranslationsModel item){
         Optional<Item> itemFromDb = itemRepository.findById(item.getItem().getId());
         if(!itemFromDb.isPresent())
-            return false;
-        itemRepository.save(item.getItem());
-        for(ItemTranslation translation : item.getTranslations()){
-            translation.setItemId(item.getItem().getId());
-            translationRepository.save(translation);
+            return null;
+        Item itemSaved = itemRepository.save(item.getItem());
+        List<ItemTranslation> itemTranslations = translationRepository.findByItemId(itemFromDb.get().getId());
+        for(ItemTranslation translation : itemTranslations){
+            boolean stillExist = false;
+            for (ItemTranslation translationEdited : item.getTranslations()){
+                if (translation.getId().equals(translationEdited.getId())){
+                    translationEdited.setItemId(item.getItem().getId());
+                    translationRepository.save(translationEdited);
+                    stillExist = true;
+                }
+            }
+            if (!stillExist){
+                translationRepository.delete(translation);
+            }
         }
-        return true;
+        for (ItemTranslation translationEdited : item.getTranslations()) {
+            if (translationEdited.getId() == null) {
+                translationEdited.setItemId(item.getItem().getId());
+                translationRepository.save(translationEdited);
+            }
+        }
+        return getModel(itemSaved.getId());
     }
 
     public boolean moveItemToSection(MoveItemModel moveItemModel){
@@ -113,10 +129,10 @@ public class ItemService {
         }
         ItemModel itemModel = new ItemModel();
         itemModel.setId(itemOptional.get().getId());
-        itemModel.setOriginal(new TranslationModel(itemOptional.get().getValue(),itemOptional.get().getLang()));
+        itemModel.setOriginal(new TranslationModel(itemOptional.get().getValue(),itemOptional.get().getLang(),""));
         itemModel.setPublic(itemOptional.get().getPublic());
         itemModel.setSectionId(itemOptional.get().getSectionId());
-        itemModel.setTranslations(translationModels);
+        itemModel.setTranslations(new ArrayList<>(itemTranslations));
         return itemModel;
     }
 }

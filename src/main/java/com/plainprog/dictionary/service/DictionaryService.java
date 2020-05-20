@@ -80,10 +80,10 @@ public class DictionaryService {
                 }
                 ItemModel itemModel = new ItemModel();
                 itemModel.setId(item.getId());
-                itemModel.setOriginal(new TranslationModel(item.getValue(),item.getLang()));
+                itemModel.setOriginal(new TranslationModel(item.getValue(),item.getLang(), ""));
                 itemModel.setPublic(item.getPublic());
                 itemModel.setSectionId(item.getSectionId());
-                itemModel.setTranslations(translationModels);
+                itemModel.setTranslations(new ArrayList<>(itemTranslations));
                 itemModels.add(itemModel);
             }
             SectionModel sectionModel = new SectionModel();
