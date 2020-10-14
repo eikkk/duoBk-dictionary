@@ -19,62 +19,62 @@ public class ItemController {
     ItemService service;
 
     @RequestMapping(method = RequestMethod.POST, value = "/Create")
-    public ResponseEntity<ItemModel> createItem(@RequestBody ItemWithTranslationsModel item){
+    public ResponseEntity<ItemModel> createItem(@RequestHeader(value = "access") String accessId, @RequestBody ItemWithTranslationsModel item){
         ItemModel model = service.createItem(item);
         return new ResponseEntity<ItemModel>(model,HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/Edit")
-    public ResponseEntity<ItemModel> edit(@RequestBody ItemWithTranslationsModel item){
+    public ResponseEntity<ItemModel> edit(@RequestHeader(value = "access") String accessId, @RequestBody ItemWithTranslationsModel item){
         ItemModel model = service.edit(item);
         if(model != null)
             return new ResponseEntity<>(model,HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
     }
-    @RequestMapping(method = RequestMethod.POST, value = "/CreateShared")
+/*    @RequestMapping(method = RequestMethod.POST, value = "/CreateShared")
     public ResponseEntity createSharedItem(@RequestBody SharedItem sharedItem){
         if(service.createSharedItem(sharedItem))
             return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
-    }
+    }*/
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/Move")
+/*    @RequestMapping(method = RequestMethod.PUT, value = "/Move")
     public ResponseEntity move(@RequestBody MoveItemModel moveItemModel){
         if(service.moveItemToSection(moveItemModel))
             return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
-    }
+    }*/
 
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/DeleteTranslation")
-    public ResponseEntity deleteTranslation(@RequestBody Integer translationId){
+    public ResponseEntity deleteTranslation(@RequestHeader(value = "access") String accessId, @RequestBody Integer translationId){
         if(service.deleteTranslation(translationId))
             return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/Delete")
-    public ResponseEntity delete(@RequestBody Integer itemId){
+    public ResponseEntity delete(@RequestHeader(value = "access") String accessId, @RequestBody Integer itemId){
         if(service.deleteItem(itemId))
             return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/DeleteShared")
+/*    @RequestMapping(method = RequestMethod.DELETE, value = "/DeleteShared")
     public ResponseEntity deleteShared(@RequestBody Integer sharedItemId){
         if(service.deleteSharedItem(sharedItemId))
             return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
-    }
+    }*/
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/ChangePublicity")
+/*    @RequestMapping(method = RequestMethod.PUT, value = "/ChangePublicity")
     public ResponseEntity changePublicity(@RequestBody Integer itemId){
         if(service.changePublicity(itemId))
             return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
-    }
+    }*/
     @RequestMapping(method = RequestMethod.GET, value = "/Get")
-    public ResponseEntity getItem(@RequestParam(value = "id",required = true) Integer id ){
+    public ResponseEntity getItem(@RequestHeader(value = "access") String accessId, @RequestParam(value = "id",required = true) Integer id ){
         ItemModel itemModel = service.getModel(id);
         if(itemModel== null)
             return new ResponseEntity<>(Constants.MESSAGE204, HttpStatus.NO_CONTENT);

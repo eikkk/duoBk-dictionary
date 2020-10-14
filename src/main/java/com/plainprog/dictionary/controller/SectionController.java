@@ -25,25 +25,25 @@ public class SectionController {
     ItemService itemService;
 
     @RequestMapping(value = "/Create",method = RequestMethod.POST)
-    public ResponseEntity<Section> createSection(@RequestBody Section section) {
+    public ResponseEntity<Section> createSection(@RequestHeader(value = "access") String accessId, @RequestBody Section section) {
         Section section1 = service.createSection(section);
         return new ResponseEntity<Section>(section1, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/CreateShared",method = RequestMethod.POST)
+/*    @RequestMapping(value = "/CreateShared",method = RequestMethod.POST)
     public ResponseEntity createSharedSection(@RequestBody SharedSection sharedSection){
         if(service.createSharedSection(sharedSection))
             return new ResponseEntity<>(Constants.MESSAGE200, HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
-    }
+    }*/
     @RequestMapping(value = "/ChangeName",method = RequestMethod.PUT)
-    public ResponseEntity changeSectionName(@RequestParam(value = "sectionId", required = true) Integer sectionId, @RequestParam(value = "name",required = true) String newName){
+    public ResponseEntity changeSectionName(@RequestHeader(value = "access") String accessId, @RequestParam(value = "sectionId", required = true) Integer sectionId, @RequestParam(value = "name",required = true) String newName){
         if(service.changeSectionName(sectionId,newName))
             return new ResponseEntity<>(Constants.MESSAGE200, HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
     }
     @RequestMapping(method = RequestMethod.DELETE, value = "/Delete")
-    public ResponseEntity delete(@RequestBody Integer sectionId){
+    public ResponseEntity delete(@RequestHeader(value = "access") String accessId, @RequestBody Integer sectionId){
         List<Item> items = itemService.getItemsBySectionId(sectionId);
         for (Item item : items){
             itemService.deleteItem(item.getId());
@@ -52,21 +52,21 @@ public class SectionController {
             return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
     }
-    @RequestMapping(method = RequestMethod.DELETE, value = "/DeleteShared")
+/*    @RequestMapping(method = RequestMethod.DELETE, value = "/DeleteShared")
     public ResponseEntity deleteShared(@RequestBody Integer sharedSectionId){
         if(service.deleteSharedSection(sharedSectionId))
             return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
-    }
+    }*/
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/ChangePublicity")
+/*    @RequestMapping(method = RequestMethod.PUT, value = "/ChangePublicity")
     public ResponseEntity changePublicity(@RequestBody Integer sectionId){
         if(service.changePublicity(sectionId))
             return new ResponseEntity<>(Constants.MESSAGE200,HttpStatus.OK);
         return new ResponseEntity<>(Constants.MESSAGE304, HttpStatus.NOT_MODIFIED);
-    }
+    }*/
     @RequestMapping(method = RequestMethod.GET, value = "/Get")
-    public ResponseEntity getSection(@RequestParam(value = "id",required = true) Integer id ){
+    public ResponseEntity getSection(@RequestHeader(value = "access") String accessId, @RequestParam(value = "id",required = true) Integer id ){
         SectionModel sectionModel = service.getModel(id);
         if(sectionModel== null)
             return new ResponseEntity<>(Constants.MESSAGE204, HttpStatus.NO_CONTENT);
