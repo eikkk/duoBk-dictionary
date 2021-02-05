@@ -9,6 +9,7 @@ public class SectionModel {
     private Integer dictId;
     private String name;
     private Boolean isPublic;
+    private Boolean fake;
     private ArrayList<ItemModel> items;
 
     public SectionModel() {
@@ -60,5 +61,13 @@ public class SectionModel {
 
     public void setItems(ArrayList<ItemModel> items) {
         this.items = items;
+    }
+
+    public Boolean getFake() {
+        return fake;
+    }
+
+    public void setFake(Boolean fake) {
+        this.fake = fake;
     }
 }

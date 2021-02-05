@@ -15,6 +15,8 @@ public class Section {
     private String name;
     @Column(name = "isPublic")
     private Boolean isPublic;
+    @Column(name = "fake")
+    private Boolean fake;
 
     public Section() {
     }
@@ -49,5 +51,13 @@ public class Section {
 
     public void setPublic(Boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public Boolean getFake() {
+        return fake;
+    }
+
+    public void setFake(Boolean fake) {
+        this.fake = fake;
     }
 }

@@ -91,6 +91,7 @@ public class DictionaryService {
             sectionModel.setDictId(section.getDictId());
             sectionModel.setName(section.getName());
             sectionModel.setItems(itemModels);
+            sectionModel.setFake(section.getFake());
             sectionModels.add(sectionModel);
         }
         DictionaryModel model = new DictionaryModel();
