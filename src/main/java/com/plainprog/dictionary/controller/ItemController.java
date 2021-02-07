@@ -5,12 +5,16 @@ import com.plainprog.dictionary.model.ItemModel;
 import com.plainprog.dictionary.model.ItemWithTranslationsModel;
 import com.plainprog.dictionary.model.MoveItemModel;
 import com.plainprog.dictionary.model.SectionModel;
+import com.plainprog.dictionary.model.db.Item;
+import com.plainprog.dictionary.model.db.Section;
 import com.plainprog.dictionary.model.db.SharedItem;
 import com.plainprog.dictionary.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping(path="/item")
@@ -30,6 +34,12 @@ public class ItemController {
         if(model != null)
             return new ResponseEntity<>(model,HttpStatus.OK);
         return new ResponseEntity<>(null, HttpStatus.NOT_MODIFIED);
+    }
+    @RequestMapping(value = "/ModifyBatch",method = RequestMethod.POST)
+    public ResponseEntity<String> modifyItems(@RequestHeader(value = "access") String accessId, @RequestBody ArrayList<Item> items) {
+        boolean success = service.modifyItemBatch(items);
+        if (success)  return new ResponseEntity<String>("DONE", HttpStatus.OK);
+        else return new ResponseEntity<String>("FAIL", HttpStatus.NOT_MODIFIED);
     }
 /*    @RequestMapping(method = RequestMethod.POST, value = "/CreateShared")
     public ResponseEntity createSharedItem(@RequestBody SharedItem sharedItem){

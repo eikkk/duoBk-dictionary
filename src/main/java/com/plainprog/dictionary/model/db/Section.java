@@ -17,6 +17,8 @@ public class Section {
     private Boolean isPublic;
     @Column(name = "fake")
     private Boolean fake;
+    @Column(name = "sort_index")
+    private Integer sortIndex;
 
     public Section() {
     }
@@ -59,5 +61,13 @@ public class Section {
 
     public void setFake(Boolean fake) {
         this.fake = fake;
+    }
+
+    public Integer getSortIndex() {
+        return sortIndex;
+    }
+
+    public void setSortIndex(Integer sortIndex) {
+        this.sortIndex = sortIndex;
     }
 }

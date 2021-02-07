@@ -30,6 +30,13 @@ public class SectionController {
         return new ResponseEntity<Section>(section1, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/ModifyBatch",method = RequestMethod.POST)
+    public ResponseEntity<String> modifySections(@RequestHeader(value = "access") String accessId, @RequestBody ArrayList<Section> sections) {
+        boolean success = service.modifySectionBatch(sections);
+        if (success)  return new ResponseEntity<String>("DONE", HttpStatus.OK);
+        else return new ResponseEntity<String>("FAIL", HttpStatus.NOT_MODIFIED);
+    }
+
 /*    @RequestMapping(value = "/CreateShared",method = RequestMethod.POST)
     public ResponseEntity createSharedSection(@RequestBody SharedSection sharedSection){
         if(service.createSharedSection(sharedSection))

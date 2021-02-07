@@ -9,6 +9,7 @@ public class ItemModel {
     private Integer sectionId;
     private Boolean isPublic;
     private TranslationModel original;
+    private Integer sortIndex;
     private ArrayList<ItemTranslation> translations;
 
     public ItemModel() {
@@ -52,5 +53,13 @@ public class ItemModel {
 
     public void setTranslations(ArrayList<ItemTranslation> translations) {
         this.translations = translations;
+    }
+
+    public Integer getSortIndex() {
+        return sortIndex;
+    }
+
+    public void setSortIndex(Integer sortIndex) {
+        this.sortIndex = sortIndex;
     }
 }

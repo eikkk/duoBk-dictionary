@@ -16,6 +16,8 @@ public class Item {
     private String lang;
     @Column(name = "isPublic")
     private Boolean isPublic;
+    @Column(name = "sort_index")
+    private Integer sortIndex;
 
     public Item() {
     }
@@ -58,5 +60,13 @@ public class Item {
 
     public void setPublic(Boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public Integer getSortIndex() {
+        return sortIndex;
+    }
+
+    public void setSortIndex(Integer sortIndex) {
+        this.sortIndex = sortIndex;
     }
 }

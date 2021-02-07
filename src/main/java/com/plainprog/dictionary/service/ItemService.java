@@ -29,7 +29,10 @@ public class ItemService {
 
     public ItemModel createItem(ItemWithTranslationsModel item){
         item.getItem().setId(null);
-        Item itemSaved = itemRepository.save(item.getItem());
+        Integer highestIndex = itemRepository.getHighestIndex();
+        Item itemToSave = item.getItem();
+        itemToSave.setSortIndex(highestIndex + 1);
+        Item itemSaved = itemRepository.save(itemToSave);
         for(ItemTranslation translation : item.getTranslations()){
             translation.setId(null);
             translation.setItemId(itemSaved.getId());
@@ -67,7 +70,26 @@ public class ItemService {
         }
         return getModel(itemSaved.getId());
     }
-
+    public boolean modifyItemBatch(ArrayList<Item> items){
+        for (Item item : items){
+            if (!modifyItem(item)) return  false;
+        }
+        return true;
+    }
+    public boolean modifyItem(Item item){
+        Optional<Item> itemOptional = itemRepository.findById(item.getId());
+        if (itemOptional.isPresent()){
+            Item itemFromDb = itemOptional.get();
+            itemFromDb.setLang(item.getLang());
+            itemFromDb.setPublic(item.getPublic());
+            itemFromDb.setSortIndex(item.getSortIndex());
+            itemFromDb.setSectionId(item.getSectionId());
+            itemFromDb.setValue(item.getValue());
+            itemRepository.save(itemFromDb);
+            return true;
+        }
+        return false;
+    }
     public boolean moveItemToSection(MoveItemModel moveItemModel){
         Optional<Section> section = sectionRepository.findById(moveItemModel.getSectionId());
         if(!section.isPresent())
@@ -132,6 +154,7 @@ public class ItemService {
         itemModel.setOriginal(new TranslationModel(itemOptional.get().getValue(),itemOptional.get().getLang(),""));
         itemModel.setPublic(itemOptional.get().getPublic());
         itemModel.setSectionId(itemOptional.get().getSectionId());
+        itemModel.setSortIndex(itemOptional.get().getSortIndex());
         itemModel.setTranslations(new ArrayList<>(itemTranslations));
         return itemModel;
     }

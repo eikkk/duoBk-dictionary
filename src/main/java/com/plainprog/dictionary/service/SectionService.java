@@ -1,6 +1,5 @@
 package com.plainprog.dictionary.service;
 
-import com.plainprog.dictionary.model.DictionaryModel;
 import com.plainprog.dictionary.model.ItemModel;
 import com.plainprog.dictionary.model.SectionModel;
 import com.plainprog.dictionary.model.TranslationModel;
@@ -29,6 +28,9 @@ public class SectionService {
 
     public Section createSection(Section section){
         section.setId(null);
+        section.setSortIndex(sectionRepository.getHighestIndex() + 1);
+        if (section.getFake()==null)
+            section.setFake(false);
         return sectionRepository.save(section);
     }
 
@@ -70,6 +72,25 @@ public class SectionService {
         sectionRepository.save(section.get());
         return true;
     }
+    public boolean modifySectionBatch(ArrayList<Section> sections){
+        for (Section section : sections){
+            if (!modifySection(section)) return  false;
+        }
+        return true;
+    }
+    public boolean modifySection(Section section){
+        Optional<Section> sect = sectionRepository.findById(section.getId());
+        if (sect.isPresent()){
+            Section sectFromDb = sect.get();
+            sectFromDb.setSortIndex(section.getSortIndex());
+            sectFromDb.setName(section.getName());
+            sectFromDb.setPublic(section.getPublic());
+            sectionRepository.save(sectFromDb);
+            return true;
+        }
+        return false;
+    }
+
     public SectionModel getModel(Integer id){
         Optional<Section> sectionOptional = sectionRepository.findById(id);
         if(!sectionOptional.isPresent())

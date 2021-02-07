@@ -83,6 +83,7 @@ public class DictionaryService {
                 itemModel.setOriginal(new TranslationModel(item.getValue(),item.getLang(), ""));
                 itemModel.setPublic(item.getPublic());
                 itemModel.setSectionId(item.getSectionId());
+                itemModel.setSortIndex(item.getSortIndex());
                 itemModel.setTranslations(new ArrayList<>(itemTranslations));
                 itemModels.add(itemModel);
             }
@@ -92,6 +93,7 @@ public class DictionaryService {
             sectionModel.setName(section.getName());
             sectionModel.setItems(itemModels);
             sectionModel.setFake(section.getFake());
+            sectionModel.setSortIndex(section.getSortIndex());
             sectionModels.add(sectionModel);
         }
         DictionaryModel model = new DictionaryModel();

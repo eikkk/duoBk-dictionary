@@ -1,7 +1,5 @@
 package com.plainprog.dictionary.model;
 
-import com.plainprog.dictionary.model.db.Section;
-
 import java.util.ArrayList;
 
 public class SectionModel {
@@ -10,6 +8,7 @@ public class SectionModel {
     private String name;
     private Boolean isPublic;
     private Boolean fake;
+    private Integer sortIndex;
     private ArrayList<ItemModel> items;
 
     public SectionModel() {
@@ -69,5 +68,13 @@ public class SectionModel {
 
     public void setFake(Boolean fake) {
         this.fake = fake;
+    }
+
+    public Integer getSortIndex() {
+        return sortIndex;
+    }
+
+    public void setSortIndex(Integer sortIndex) {
+        this.sortIndex = sortIndex;
     }
 }
