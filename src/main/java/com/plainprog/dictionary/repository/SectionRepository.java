@@ -10,4 +10,6 @@ public interface SectionRepository extends CrudRepository<Section,Integer> {
     List<Section> findByDictId(Integer dictId);
     @Query(value = "select max(sort_index) from dict_section;",nativeQuery = true)
     public Integer getHighestIndex();
+    @Query(value = "select id from dict_section where dict_id=:dictId && fake=1;",nativeQuery = true)
+    public Integer getFakeSectionId(Integer dictId);
 }

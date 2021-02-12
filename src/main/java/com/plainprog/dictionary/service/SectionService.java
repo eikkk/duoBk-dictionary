@@ -33,7 +33,19 @@ public class SectionService {
             section.setFake(false);
         return sectionRepository.save(section);
     }
-
+    public Section createFakeSection(Integer dictId){
+        Section section = new Section();
+        section.setFake(true);
+        section.setSortIndex(-1);
+        section.setId(null);
+        section.setPublic(false);
+        section.setName("Fake"+dictId);
+        section.setDictId(dictId);
+        return sectionRepository.save(section);
+    }
+    public Integer getFakeSectionId(Integer dictId){
+        return  sectionRepository.getFakeSectionId(dictId);
+    }
     public boolean createSharedSection(SharedSection sharedSection){
         Optional<Section> section = sectionRepository.findById(sharedSection.getSectionId());
         if(!section.isPresent())

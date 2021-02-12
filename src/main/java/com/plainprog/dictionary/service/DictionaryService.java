@@ -59,6 +59,9 @@ public class DictionaryService {
         Integer id = dictRepository.getDictIdByAccessId(accessId);
         return  getModel(id);
     }
+    public Integer getDictIdByAccessToken(String accessId){
+        return dictRepository.getDictIdByAccessId(accessId);
+    }
     public DictionaryModel getOrCreateAndGetDictByAccessToken(String accessId){
         Integer id = dictRepository.getOrCreateAndGetDictIdByAccessId(accessId);
         return getModel(id);

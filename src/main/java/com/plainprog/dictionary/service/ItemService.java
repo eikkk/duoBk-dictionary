@@ -33,6 +33,8 @@ public class ItemService {
         Item itemToSave = item.getItem();
         itemToSave.setSortIndex(highestIndex + 1);
         Item itemSaved = itemRepository.save(itemToSave);
+        if (item.getTranslations() == null)
+            item.setTranslations(new ArrayList<>());
         for(ItemTranslation translation : item.getTranslations()){
             translation.setId(null);
             translation.setItemId(itemSaved.getId());

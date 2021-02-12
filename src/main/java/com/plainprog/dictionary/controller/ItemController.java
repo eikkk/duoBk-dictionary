@@ -8,7 +8,9 @@ import com.plainprog.dictionary.model.SectionModel;
 import com.plainprog.dictionary.model.db.Item;
 import com.plainprog.dictionary.model.db.Section;
 import com.plainprog.dictionary.model.db.SharedItem;
+import com.plainprog.dictionary.service.DictionaryService;
 import com.plainprog.dictionary.service.ItemService;
+import com.plainprog.dictionary.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,26 @@ import java.util.ArrayList;
 public class ItemController {
     @Autowired
     ItemService service;
+    @Autowired
+    SectionService sectionService;
+    @Autowired
+    DictionaryService dictService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/Create")
     public ResponseEntity<ItemModel> createItem(@RequestHeader(value = "access") String accessId, @RequestBody ItemWithTranslationsModel item){
+        Integer dictId = dictService.getDictIdByAccessToken(accessId);
+        if (dictId == null){
+            return new ResponseEntity<>(null,HttpStatus.FORBIDDEN);
+        }
+        if (item.getItem().getSectionId() == null){
+            // if section == null it's unsectioned word, find fake section to put it in
+            Integer fakeSectionId = sectionService.getFakeSectionId(dictId);
+            if (fakeSectionId == null){
+                Section section = sectionService.createFakeSection(dictId);
+                fakeSectionId = section.getId();
+            }
+            item.getItem().setSectionId(fakeSectionId);
+        }
         ItemModel model = service.createItem(item);
         return new ResponseEntity<ItemModel>(model,HttpStatus.OK);
     }
