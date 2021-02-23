@@ -37,7 +37,7 @@ public class SectionService {
         section.setSortIndex(sectionRepository.getHighestIndex() + 1);
         if (section.getFake()==null)
             section.setFake(false);
-        if (section.getColor() == null){
+        if (section.getColor() == null && !section.getFake()){
             List<Section> userSections = sectionRepository.findByDictId(section.getDictId());
             List<String> colors = userSections.stream().map(Section::getColor).collect(Collectors.toList());
             section.setColor(SectionColorManager.getMostSuitableColor(colors));
@@ -61,6 +61,7 @@ public class SectionService {
         section.setPublic(false);
         section.setName("Fake"+dictId);
         section.setDictId(dictId);
+        section.setColor("FFFFFF");
         return sectionRepository.save(section);
     }
     public Integer getFakeSectionId(Integer dictId){

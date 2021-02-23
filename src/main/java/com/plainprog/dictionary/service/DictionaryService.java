@@ -97,6 +97,7 @@ public class DictionaryService {
             sectionModel.setItems(itemModels);
             sectionModel.setFake(section.getFake());
             sectionModel.setSortIndex(section.getSortIndex());
+            sectionModel.setColor(section.getColor());
             sectionModels.add(sectionModel);
         }
         DictionaryModel model = new DictionaryModel();
