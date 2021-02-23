@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface DictionaryRepository extends CrudRepository<Dictionary,Integer> {
 
-    @Query(value = "SELECT A.id FROM duobkdb.dictionary A left join duobkdb.user B on a.user_id = b.id where access_id =:accessId",nativeQuery = true)
+    @Query(value = "SELECT A.id FROM duobkdb.dictionary A left join duobkdb.user B on A.user_id = B.id where access_id =:accessId",nativeQuery = true)
     public Integer getDictIdByAccessId(@Param(value = "accessId") String accessId);
 
 //    @Query(value = "CALL create_dict_if_not_exist_and_return_id(:accessId,@id); select @id as id;",nativeQuery = true)
