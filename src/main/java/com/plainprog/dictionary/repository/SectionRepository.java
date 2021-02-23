@@ -1,5 +1,6 @@
 package com.plainprog.dictionary.repository;
 
+import com.plainprog.dictionary.model.db.Item;
 import com.plainprog.dictionary.model.db.Section;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

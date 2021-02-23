@@ -51,6 +51,10 @@ public class SectionController {
     }
     @RequestMapping(method = RequestMethod.DELETE, value = "/Delete")
     public ResponseEntity delete(@RequestHeader(value = "access") String accessId, @RequestBody Integer sectionId){
+        Section section = service.getById(sectionId);
+        if (section != null && section.getFake()){
+            return new ResponseEntity<>(Constants.MESSAGE403, HttpStatus.FORBIDDEN);
+        }
         List<Item> items = itemService.getItemsBySectionId(sectionId);
         for (Item item : items){
             itemService.deleteItem(item.getId());

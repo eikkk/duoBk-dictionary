@@ -1,5 +1,6 @@
 package com.plainprog.dictionary.service;
 
+import com.plainprog.dictionary.Constants;
 import com.plainprog.dictionary.model.ItemModel;
 import com.plainprog.dictionary.model.SectionModel;
 import com.plainprog.dictionary.model.TranslationModel;
@@ -9,6 +10,8 @@ import com.plainprog.dictionary.repository.SectionRepository;
 import com.plainprog.dictionary.repository.SharedSectionRepository;
 import com.plainprog.dictionary.repository.TranslationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -102,7 +105,9 @@ public class SectionService {
         }
         return false;
     }
-
+    public Section getById(Integer id){
+       return sectionRepository.findById(id).orElse(null);
+    }
     public SectionModel getModel(Integer id){
         Optional<Section> sectionOptional = sectionRepository.findById(id);
         if(!sectionOptional.isPresent())
