@@ -19,6 +19,8 @@ public class Section {
     private Boolean fake;
     @Column(name = "sort_index")
     private Integer sortIndex;
+    @Column(name = "color")
+    private String color;
 
     public Section() {
     }
@@ -69,5 +71,13 @@ public class Section {
 
     public void setSortIndex(Integer sortIndex) {
         this.sortIndex = sortIndex;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

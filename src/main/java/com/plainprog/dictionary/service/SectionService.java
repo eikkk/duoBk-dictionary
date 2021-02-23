@@ -1,6 +1,7 @@
 package com.plainprog.dictionary.service;
 
 import com.plainprog.dictionary.Constants;
+import com.plainprog.dictionary.helpers.SectionColorManager;
 import com.plainprog.dictionary.model.ItemModel;
 import com.plainprog.dictionary.model.SectionModel;
 import com.plainprog.dictionary.model.TranslationModel;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class SectionService {
@@ -34,6 +36,11 @@ public class SectionService {
         section.setSortIndex(sectionRepository.getHighestIndex() + 1);
         if (section.getFake()==null)
             section.setFake(false);
+        if (section.getColor() == null){
+            List<Section> userSections = sectionRepository.findByDictId(section.getDictId());
+            List<String> colors = userSections.stream().map(Section::getColor).collect(Collectors.toList());
+            section.setColor(SectionColorManager.getMostSuitableColor(colors));
+        }
         return sectionRepository.save(section);
     }
     public Section createFakeSection(Integer dictId){
@@ -133,6 +140,7 @@ public class SectionService {
         sectionModel.setDictId(sectionOptional.get().getDictId());
         sectionModel.setName(sectionOptional.get().getName());
         sectionModel.setItems(itemModels);
+        sectionModel.setColor(sectionOptional.get().getColor());
         return sectionModel;
     }
 }

@@ -9,6 +9,7 @@ public class SectionModel {
     private Boolean isPublic;
     private Boolean fake;
     private Integer sortIndex;
+    private String color;
     private ArrayList<ItemModel> items;
 
     public SectionModel() {
@@ -76,5 +77,13 @@ public class SectionModel {
 
     public void setSortIndex(Integer sortIndex) {
         this.sortIndex = sortIndex;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }
