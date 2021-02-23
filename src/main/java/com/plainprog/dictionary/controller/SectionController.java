@@ -83,4 +83,9 @@ public class SectionController {
             return new ResponseEntity<>(Constants.MESSAGE204, HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(sectionModel,HttpStatus.OK);
     }
+    @RequestMapping(value = "/FixNullColors",method = RequestMethod.PUT)
+    public ResponseEntity fixNullColors(){
+        service.fixNullColors();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,6 +43,15 @@ public class SectionService {
             section.setColor(SectionColorManager.getMostSuitableColor(colors));
         }
         return sectionRepository.save(section);
+    }
+    public void fixNullColors(){
+        List<Section> allSections = sectionRepository.findAll();
+        for (Section section : allSections){
+            if (section.getColor() == null){
+                section.setColor(SectionColorManager.getMostSuitableColor(Collections.emptyList()));
+                sectionRepository.save(section);
+            }
+        }
     }
     public Section createFakeSection(Integer dictId){
         Section section = new Section();
