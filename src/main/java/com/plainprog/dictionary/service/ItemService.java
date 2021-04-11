@@ -78,6 +78,11 @@ public class ItemService {
         }
         return true;
     }
+    public void deleteItemBatch(ArrayList<Integer> ids){
+        for (Integer id : ids){
+            itemRepository.deleteById(id);
+        }
+    }
     public boolean modifyItem(Item item){
         Optional<Item> itemOptional = itemRepository.findById(item.getId());
         if (itemOptional.isPresent()){

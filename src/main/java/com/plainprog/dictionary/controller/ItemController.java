@@ -60,6 +60,11 @@ public class ItemController {
         if (success)  return new ResponseEntity<String>("DONE", HttpStatus.OK);
         else return new ResponseEntity<String>("FAIL", HttpStatus.NOT_MODIFIED);
     }
+    @RequestMapping(value = "/DeleteBatch",method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteItems(@RequestHeader(value = "access") String accessId, @RequestBody ArrayList<Integer> ids) {
+        service.deleteItemBatch(ids);
+        return new ResponseEntity<String>("DONE", HttpStatus.OK);
+    }
 /*    @RequestMapping(method = RequestMethod.POST, value = "/CreateShared")
     public ResponseEntity createSharedItem(@RequestBody SharedItem sharedItem){
         if(service.createSharedItem(sharedItem))
